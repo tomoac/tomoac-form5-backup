@@ -95,7 +95,8 @@
 					$bid = $val;
 					break;
 				case 'questionSetId':
-					$html.= '<td>'.$val.'</td>';
+					$questionSetId = $val;
+					$html.= '<td>'.$questionSetId.'</td>';
 					break;
 				case 'cvDateCreated':
 					$html.= '<td>'.$val.'</td>';
@@ -103,7 +104,7 @@
 					$html.= '<form action="'.View::url($backupdir.'/restore','restore_form').'" method="post" enctype="multipart/form-data">'."\n";
 					$html.= '<td>';
 					$html.= '<input type="hidden" name="bid" value="'.$bid.'" />';
-					$html.= '<input type="hidden" name="questionSetId" value="'.$val.'" />';
+					$html.= '<input type="hidden" name="questionSetId" value="'.$questionSetId.'" />';
 					$html.= '<input type="file" name="json" size="26" /> <input type="submit" name="upload" value="'.t('Restore').'" />';
 					$html.= '</td>';
 					$html.= '</form>';
