@@ -105,7 +105,12 @@
 					$html.= '<td>';
 					$html.= '<input type="hidden" name="bid" value="'.$bid.'" />';
 					$html.= '<input type="hidden" name="questionSetId" value="'.$questionSetId.'" />';
-					$html.= '<input type="file" name="json" size="26" /> <input type="submit" name="upload" value="'.t('Restore').'" />';
+					$html.= '<input type="file" name="json[]" size="26" />btFormTomoacQuestions';
+					$html.= '<input type="file" name="json[]" size="26" />btFormTomoacAnswerSet';
+					$html.= '<input type="file" name="json[]" size="26" />btFormTomoacAnswers';
+					$html.= '<br />';
+					$html.= '<input type="submit" name="upload1" value="'.t('Form Restore').'" />';
+					$html.= '<input type="submit" name="upload2" value="'.t('Data Restore').'" />';
 					$html.= '</td>';
 					$html.= '</form>';
 					$html.= '</tr>';
