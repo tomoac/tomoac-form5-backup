@@ -3,7 +3,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 
 class DashboardFormTomoacBackupRestoreController extends Controller {
 
-	/* ---------------- common code ---------------- */
+	/* ---------------- common code (2012/7/18) ---------------- */
+
 	public function restore_form() {
 
 		$errmes  = '';
@@ -70,6 +71,13 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 			}
 			//error_log($sql);
 			$db->query($sql);
+		}
+		if($_POST['data'] != 'data') {	// only Form
+			if($errmes == '')
+				$this->set('message', '"'.$_FILES['json']['name'].'" '.t('was restored.'));
+			else
+				$this->set('message', $errmes);
+			return;
 		}
 
 		// === アップロードファイル (AnswerSet) === //

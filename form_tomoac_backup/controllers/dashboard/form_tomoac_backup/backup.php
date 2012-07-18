@@ -3,7 +3,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 
 class DashboardFormTomoacBackupBackupController extends Controller {
 
-	/* ---------------- common code ---------------- */
+	/* ---------------- common code (2012/7/18) ---------------- */
+
 	public function backup_form() {
 
 		$errmes = '';

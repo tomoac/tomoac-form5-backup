@@ -4,8 +4,9 @@
 	$backupdir = "/dashboard/form_tomoac_backup";
 	$subname = t('Restore Form Items of \'Tomoac Form 5 Backup\'');
 ?>
-<!-- ---------------- common code ---------------- -->
 <?php
+	/* ---------------- common code (2012/7/18) ---------------- */
+
 	$ver = substr(Config::get('SITE_APP_VERSION'),0,4);	// check current version
 	$errmes = '';
 
@@ -109,6 +110,8 @@
 					$html.= '<input type="file" name="json" size="26" />';
 					$html.= '<br />';
 					$html.= '<input type="submit" name="upload" value="'.t('Form Restore').'" />';
+					$html.= '&nbsp;';
+					$html.= '<input type="checkbox" name="data" value="data" checked>'.t('with Data')."\n";
 					$html.= '</td>';
 					$html.= '</form>';
 					$html.= '</tr>';
