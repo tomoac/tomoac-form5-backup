@@ -3,6 +3,9 @@
 <?php
 	$backupdir = "/dashboard/form_tomoac_backup";
 	$subname = t('Backup Form Items of \'Tomoac Form 5 Backup\'');
+?>
+<!-- ---------------- common code ---------------- -->
+<?php
 	$ver = substr(Config::get('SITE_APP_VERSION'),0,4);	// check current version
 	$errmes = '';
 	
@@ -103,7 +106,8 @@
 					$html.= '<input type="hidden" name="surveyName" value="'.$surveyName.'">'."\n";
 					$html.= '<input type="hidden" name="bID" value="'.$bid.'">'."\n";
 					$html.= '<input type="hidden" name="questionSetId" value="'.$val.'">'."\n";
-					$html.= '<input type="submit" name="exec" value="'.t('Backup').'">'."\n";
+					$html.= '<input type="submit" name="backup" value="'.t('Form Backup').'">'."\n";
+					$html.= '<input type="checkbox" name="data" value="data" checked>'.t('Data')."\n";
 					$html.= '</td>';
 					$html.= '</form>';
 					$html.= '</tr>';

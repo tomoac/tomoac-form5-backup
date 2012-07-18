@@ -3,11 +3,12 @@
 <?php
 	$backupdir = "/dashboard/form_tomoac_backup";
 	$subname = t('Restore Form Items of \'Tomoac Form 5 Backup\'');
+?>
+<!-- ---------------- common code ---------------- -->
+<?php
 	$ver = substr(Config::get('SITE_APP_VERSION'),0,4);	// check current version
 	$errmes = '';
-?>
 
-<?php
 	if($ver == '5.4.') {
 		// version 5.4.x
 		echo '<h1><span>'.$subname.'</span></h1>';
@@ -105,12 +106,9 @@
 					$html.= '<td>';
 					$html.= '<input type="hidden" name="bid" value="'.$bid.'" />';
 					$html.= '<input type="hidden" name="questionSetId" value="'.$questionSetId.'" />';
-					$html.= '<input type="file" name="json[]" size="26" />btFormTomoacQuestions';
-					$html.= '<input type="file" name="json[]" size="26" />btFormTomoacAnswerSet';
-					$html.= '<input type="file" name="json[]" size="26" />btFormTomoacAnswers';
+					$html.= '<input type="file" name="json" size="26" />';
 					$html.= '<br />';
-					$html.= '<input type="submit" name="upload1" value="'.t('Form Restore').'" />';
-					$html.= '<input type="submit" name="upload2" value="'.t('Data Restore').'" />';
+					$html.= '<input type="submit" name="upload" value="'.t('Form Restore').'" />';
 					$html.= '</td>';
 					$html.= '</form>';
 					$html.= '</tr>';

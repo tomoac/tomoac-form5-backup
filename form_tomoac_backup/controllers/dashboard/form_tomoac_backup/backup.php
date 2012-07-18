@@ -3,8 +3,9 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 
 class DashboardFormTomoacBackupBackupController extends Controller {
 
+	/* ---------------- common code ---------------- */
 	public function backup_form() {
-//		error_log("backup",0);
+
 		$errmes = '';
 
 		$db = Loader::db();
@@ -24,36 +25,47 @@ class DashboardFormTomoacBackupBackupController extends Controller {
 			
 			case 'backup':		// backup
 
+				$surveyname = $_POST['surveyName'];
+				$bid = $_POST['bID'];
+				$filename = date('Y-m-d_H:i')."_$surveyname($bid)";
+
 				// -------- dump from btFormTomoacQuestions -------- //
-				$fn = date('Y-m-d_H:i').'_'.$_POST['surveyName'].'('.$_POST['bID'].').json';
+				$fn = $filename.".json";
 				$fh->clear($path.'/'.$fn);
 
-				$bid = $_POST['bID'];
-				$rows = $db->query("SELECT * FROM btFormTomoacQuestions WHERE bID='".$bid."' ORDER BY position,msqID");
+				$rows = $db->query("SELECT * FROM btFormTomoacQuestions WHERE bID=$bid ORDER BY position,msqID");
+				$msqid = 0;
 				foreach($rows as $row) {
+					foreach($row as $key=>$val) {
+						if($key == 'qID')
+							$row{'qID'} = '';
+						if($key == 'msqID')
+							$row{'msqID'} = $msqid++;
+					}
 					$fh->append($path.'/'.$fn, $js->encode($row) ."\n");
 				}
-				$qsfn = $fn;
+				if($_POST['data'] != 'data') {	// only Form
+					if($errmes == '')
+						$this->set('message', '"'.$fn.'" '.t('was backuped.'));
+					else
+						$this->set('message', $errmes);
+					break;
+				}
 
 				// -------- dump from btFormTomoacAnswers -------- //
-				$fn = date('Y-m-d_H:i').'_'.$_POST['surveyName'].'('.$_POST['bID'].')_Answers.json';
-				$fh->clear($path.'/'.$fn);
-
-				// listup msqID
-				$bid = $_POST['bID'];
 				$msqIDlist = '';
 				$sql = "SELECT msqID FROM btFormTomoacQuestions WHERE bID=$bid ORDER BY position,msqID";
-//				error_log($sql,0);
-				$rows = $db->query( $sql );
+				//error_log($sql,0);
+				$rows = $db->query($sql, $val);
 				foreach($rows as $row) {
 					foreach($row as $key=>$val) {
 						if($msqIDlist != '')
 							$msqIDlist .= ' OR ';
-						$msqIDlist .= 'msqID='.$val;
+						$msqIDlist .= 'msqID='.$val;	// listup msqID
 					}
 				}
 				$sql = "SELECT * FROM btFormTomoacAnswers WHERE $msqIDlist ORDER BY asID,msqID";
-				error_log($sql,0);
+				//error_log($sql,0);
 				$rows = $db->query($sql);
 				$newasID = 0;
 				$curasID = 0;
@@ -74,23 +86,19 @@ class DashboardFormTomoacBackupBackupController extends Controller {
 				}
 
 				// -------- dump from btFormTomoacAnswerSet -------- //
-				
-				// listup asID
 				$asIDar = array();
-				$sql = "SELECT DISTINCT asID FROM btFormTomoacAnswers WHERE ".$msqIDlist." ORDER BY asID,msqID";
-				error_log($sql,0);
+				$sql = "SELECT DISTINCT asID FROM btFormTomoacAnswers WHERE $msqIDlist ORDER BY asID,msqID";
+				//error_log($sql,0);
 				$rows = $db->query($sql);
 				foreach($rows as $row)
 					foreach($row as $key=>$val)
-						$asIDar[] = $val;
-
-				$fn = date('Y-m-d_H:i').'_'.$_POST['surveyName'].'('.$_POST['bID'].')_AnswerSet.json';
-				$fh->clear($path.'/'.$fn);
+						$asIDar[] = $val;	// listup asID
 
 				$newasID = 0;
 				foreach($asIDar as $asID) {
-					$sql = "SELECT * FROM btFormTomoacAnswerSet WHERE asID=".$asID;
-					$rows = $db->query($sql);
+					$val = array($asID);
+					$sql = "SELECT * FROM btFormTomoacAnswerSet WHERE asID=?";
+					$rows = $db->query($sql, $val);
 
 					$row = $rows->fetchrow();
 					$row{'asID'} = $newasID;
@@ -98,13 +106,11 @@ class DashboardFormTomoacBackupBackupController extends Controller {
 
 					$newasID++;
 				}
-
 				// -------- closed ------- //
 				if($errmes == '')
-					$this->set('message', '"'.$qsfn.'" '.t('was backuped.'));
+					$this->set('message', '"'.$fn.'" '.t('was backuped.'));
 				else
 					$this->set('message', $errmes);
-				
 				break;
 			
 			case 'download':		// download
