@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 
 class DashboardFormTomoacBackupRestoreController extends Controller {
 
-	/* ---------------- common code (2012/7/18) ---------------- */
+	/* ---------------- common code (2012/7/19) ---------------- */
 
 	public function restore_form() {
 
@@ -28,11 +28,17 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 
 		// === アップロードファイル (btFormTomoacQuestions) === //
 		$fn = $_FILES['json']['tmp_name'];
-		list( $errmes, $jsonar ) = $this->get_json_array( $fn, 0 );
+		$nfn = $_FILES['json']['name'];
+		$nfs = $_FILES['json']['size'];
+		if(substr($_FILES['json']['name'],-5) == '.json')
+			list( $errmes, $jsonar ) = $this->get_json_array( $fn, 0 );
+		else
+			$errmes .= t('Could not upload: upload file must be from backup file on this module by ".json"');
 		if($errmes != '') {
 			$this->set('message', $errmes);
 			return;
 		}
+		$c = 0;
 		foreach($jsonar as $json) {
 			if($json == '')
 				continue;
@@ -71,10 +77,11 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 			}
 			//error_log($sql);
 			$db->query($sql);
+			$c++;
 		}
 		if($_POST['data'] != 'data') {	// only Form
 			if($errmes == '')
-				$this->set('message', '"'.$_FILES['json']['name'].'" '.t('was restored.'));
+				$this->set('message', '"'.$_FILES['json']['name'].'" '.t('was restored.')."($c items)");
 			else
 				$this->set('message', $errmes);
 			return;
@@ -86,6 +93,7 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 			$this->set('message', $errmes);
 			return;
 		}
+		$c1 = 0;
 		foreach($jsonar as $json) {
 			if($json == '')
 				continue;
@@ -107,7 +115,7 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 			$sql .= "'".array_shift($valar)."')";
 			//error_log($sql);
 			$db->query($sql);
-
+			$c1++;
 			$asIDar[] = $db->GetOne("SELECT LAST_INSERT_ID()");
 		}
 
@@ -117,6 +125,7 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 			$this->set('message', $errmes);
 			return;
 		}
+		$c2 = 0;
 		foreach($jsonar as $json) {
 			if($json == '')
 				continue;
@@ -142,9 +151,10 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 			$sql .= "'".array_shift($valar)."')";
 			//error_log($sql);
 			$db->query($sql);
+			$c2++;
 		}
 		if($errmes == '')
-			$this->set('message', '"'.$_FILES['json']['name'].'" '.t('was restored.'));
+			$this->set('message', '"'.$_FILES['json']['name'].'" '.t('was restored.')."($c items / $c1 answerset / $c2 answers)");
 		else
 			$this->set('message', $errmes);
 	}

@@ -6,7 +6,7 @@ class FormTomoacBackupPackage extends Package {
 
      protected $pkgHandle = 'form_tomoac_backup';
      protected $appVersionRequired = '5.4.2';
-     protected $pkgVersion = '0.7.1';
+     protected $pkgVersion = '0.7.2';
 
      public function getPackageDescription() {
           return t('Tomoac Form 5 Backup tools.');
