@@ -131,4 +131,29 @@ class DashboardFormTomoacBackupBackupController extends Controller {
 			}
 		}
 	}
+
+	// ----------- get form list ---------------- //
+	function getFormList() {
+		$db = Loader::db();
+		try {	// ----------- get form list ---------------- //
+			$sql = "SELECT	CollectionVersions.cID,
+						btFormTomoac.surveyName,
+						btFormTomoac.bID,
+						btFormTomoac.questionSetId,
+						CollectionVersions.cvDateCreated
+					FROM CollectionVersionBlocks 
+						INNER JOIN CollectionVersions 
+							ON CollectionVersionBlocks.cID=CollectionVersions.cID 
+								AND CollectionVersionBlocks.cvID=CollectionVersions.cvID 
+						INNER JOIN btFormTomoac 
+							ON CollectionVersionBlocks.bID=btFormTomoac.bID 
+					WHERE CollectionVersions.cvIsApproved=1
+				";
+			$rows = $db->Execute($sql);
+		}
+		catch (exception $e) {
+			$errmes = t('You have not created any forms by \'Tomoac Form 5\'.');
+		}
+		return array($errmes, $rows);
+	}
 }

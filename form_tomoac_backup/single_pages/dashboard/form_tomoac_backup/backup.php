@@ -22,28 +22,10 @@
 		echo $h->getDashboardPaneHeaderWrapper( $subname );
 	}
 
-	$db = Loader::db();
 	$js = Loader::helper('json');
 	$fh = Loader::helper('file');
-	try {
-		$sql = "SELECT	CollectionVersions.cID,
-						btFormTomoac.surveyName,
-						btFormTomoac.bID,
-						btFormTomoac.questionSetId,
-						CollectionVersions.cvDateCreated
-					FROM CollectionVersionBlocks 
-						INNER JOIN CollectionVersions 
-							ON CollectionVersionBlocks.cID=CollectionVersions.cID 
-								AND CollectionVersionBlocks.cvID=CollectionVersions.cvID 
-						INNER JOIN btFormTomoac 
-							ON CollectionVersionBlocks.bID=btFormTomoac.bID 
-					WHERE CollectionVersions.cvIsApproved=1
-				";
-		$rows = $db->Execute($sql);
-	}
-	catch (exception $e) {
-		$errmes = t('You have not created any forms by \'Tomoac Form 5\'.');
-	}
+	list( $errmes, $rows) = DashboardFormTomoacBackupBackupController::getFormList();
+
 	if($ver == '5.4.') {
 		$title = '
 			<div class="ccm-spacer">&nbsp;</div>
