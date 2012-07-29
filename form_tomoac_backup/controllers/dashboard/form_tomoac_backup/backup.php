@@ -57,7 +57,7 @@ class DashboardFormTomoacBackupBackupController extends Controller {
 				$msqIDlist = '';
 				$sql = "SELECT msqID FROM btFormTomoacQuestions WHERE bID=$bid ORDER BY position,msqID";
 				//error_log($sql,0);
-				$rows = $db->query($sql, $val);
+				$rows = $db->query($sql);
 				foreach($rows as $row) {
 					foreach($row as $key=>$val) {
 						if($msqIDlist != '')

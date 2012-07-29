@@ -232,6 +232,7 @@ class DashboardFormTomoacBackupRestoreController extends Controller {
 							ON CollectionVersionBlocks.bID=btFormTomoac.bID 
 					WHERE CollectionVersions.cvIsApproved=1
 				";
+			error_log($sql,0);
 			$rows = $db->Execute($sql);
 		}
 		catch (exception $e) {
