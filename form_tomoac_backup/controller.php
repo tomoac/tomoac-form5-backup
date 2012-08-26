@@ -5,8 +5,8 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 class FormTomoacBackupPackage extends Package {
 
      protected $pkgHandle = 'form_tomoac_backup';
-     protected $appVersionRequired = '5.4.2';
-     protected $pkgVersion = '0.7.3';
+     protected $appVersionRequired = '5.4.0';
+     protected $pkgVersion = '0.7.4';
 
      public function getPackageDescription() {
           return t('Tomoac Form 5 Backup tools.');

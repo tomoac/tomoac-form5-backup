@@ -16,8 +16,8 @@
 		echo '<div class="ccm-dashboard-inner">';
 		echo '<div class="ccm-addon-list-wrapper">';
 	}
-	if($ver == '5.5.') {
-		// version 5.5.x
+	if(($ver == '5.5.')||($ver == '5.6.')) {
+		// version 5.5.x or 5.6.x
 		$h = Loader::helper('concrete/dashboard');
 		echo $h->getDashboardPaneHeaderWrapper( $subname );
 	}
@@ -45,6 +45,22 @@
 			<div style="margin:0px; padding:0px; width:100%; height:auto" >
 			<div class="ccm-ui">
 			<table class="zebra-striped" border="1">
+			<tr>
+				<td class="header">'.t('Page Name').t(' (cID)').'</td>
+				<td class="header">'.t('Form Name').t(' (surveyName)').'</td>
+				<td class="header">'.t('BlockID').t(' (bID)').'</td>
+				<td class="header">'.t('ItemID').t(' (questionSetId)').'</td>
+				<td class="header">'.t('Created Date').t(' (created)').'</td>
+				<td class="header"></td>
+			</tr>
+		';
+	}
+	if($ver == '5.6.') {
+		// version 5.6.x
+		$title = '
+			<div style="margin:0px; padding:0px; width:100%; height:auto" >
+			<div class="ccm-ui">
+			<table class="table table-striped" border="1">
 			<tr>
 				<td class="header">'.t('Page Name').t(' (cID)').'</td>
 				<td class="header">'.t('Form Name').t(' (surveyName)').'</td>
